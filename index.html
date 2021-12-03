@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body>
+  <div ng-app="myApp" ng-controller="myCtrl">
+    <h1 style="color: blue;">--- Dices game ---</h1>
+    <div class="flex">
+      <div class="flex-grow">
+        <input class="border-2 border-primary bg-red transition m-4 rounded-md focus:outline-none w-240 text-black text-lg " type="text" placeholder="Type username to begin" ng-model="name">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-6 rounded"ng-click="roll(name)">
+          Play
+        </button>
+        <h2 id="score">Result: {{score}}</h2>
+      </div>
+      <div class="flex-grow">
+        <h2>Leader board</h2>
+        <li style="background-color: cadetblue;" ng-repeat="i in leaderboard">
+          {{i["name"]}} - {{i["score"]}}
+        </li>
+      </div>
+  </div>
+  </div>
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope) {
+      $scope.leaderboard = [];
+      $scope.roll = function (name) {
+        fetch(`/roll?name=${name}`)
+          .then(res => res.json())
+          .then(out => {
+            $scope.score = out.data
+            $scope.$apply()
+          })
+        $scope.fetchLeader()
+      }
+      $scope.fetchLeader = () => fetch("/leaderboard")
+        .then(res => res.json())
+        .then(out => {
+          console.log(out.data)
+          $scope.leaderboard = out.data
+          $scope.$apply()
+        })
+      $scope.fetchLeader()
+    });
+  </script>
+</body>
+
+</html>
