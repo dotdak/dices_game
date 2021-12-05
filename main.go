@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 
 	"github.com/dotdak/dices_game/pkg"
 )
@@ -13,7 +14,10 @@ import (
 const maxLeaderBoard = 10
 
 func main() {
-	port := ":8080"
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	leaderboard := &pkg.LeaderBoard{
 		Data: make([]*pkg.User, 0, maxLeaderBoard+1),
 		Size: maxLeaderBoard,
@@ -60,7 +64,7 @@ func main() {
 	})
 
 	log.Println("Start server at ", port)
-	if err := http.ListenAndServe(port, nil); err != nil {
+	if err := http.ListenAndServe(fmt.Sprint(":", port), nil); err != nil {
 		log.Fatal(err)
 	}
 }
