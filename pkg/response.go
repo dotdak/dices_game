@@ -18,5 +18,5 @@ func (r *Response) Marshal() []byte {
 
 func (r *Response) Write(rw http.ResponseWriter) {
 	rw.WriteHeader(r.Code)
-	rw.Write(r.Marshal())
+	_, _ = rw.Write(r.Marshal())
 }

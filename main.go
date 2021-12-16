@@ -31,7 +31,7 @@ func main() {
 			}).Write(rw)
 			return
 		}
-		rw.Write(page)
+		_, _ = rw.Write(page)
 	})
 
 	http.HandleFunc("/leaderboard", func(rw http.ResponseWriter, r *http.Request) {

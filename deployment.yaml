@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dices-game
+  labels:
+    app: dices-game
+spec:
+  ports:
+  - port: 8888
+    targetPort: 8888
+    protocol: TCP
+  selector:
+    app: dices-game
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dices-game
+  labels:
+    app: dices-game
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dices-game
+  template:
+    metadata:
+      labels:
+        app: dices-game
+    spec:
+      containers:
+      - name: dices-game
+        image: dices-game
+        imagePullPolicy: Never

@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: dices-game
+build:
+  artifacts:
+  - image: dices-game
+    docker:
+      dockerfile: Dockerfile
+      buildArgs: {
+        PORT: "{{.PORT}}"
+      }
+deploy:
+  kubectl:
+    manifests:
+    - deployment.yaml
